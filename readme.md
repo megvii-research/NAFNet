@@ -11,6 +11,22 @@
 ### News
 NAFNet based Stereo Image Super-Resolution solution won the **1st place** on the NTIRE 2022 Stereo Image Super-resolution Challenge! Coming Soon.
 
+### Installation
+This implementation based on [BasicSR](https://github.com/xinntao/BasicSR) which is a open source toolbox for image/video restoration tasks and [HINet](https://github.com/megvii-model/HINet) 
+
+```python
+python 3.9.5
+pytorch 1.11.0
+cuda 11.3
+```
+
+```
+git clone https://github.com/megvii-research/NAFNet
+cd NAFNet
+pip install -r requirements.txt
+python setup.py develop --no_cuda_ext
+```
+
 ### Quick Start 
 Colab demo **coming soon!**
 
