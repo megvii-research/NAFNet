@@ -1,3 +1,12 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+
+'''
+Simple Baselines for Image Restoration
+
+'''
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

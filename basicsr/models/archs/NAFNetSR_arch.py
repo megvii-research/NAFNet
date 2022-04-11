@@ -1,3 +1,18 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+
+'''
+NAFSSR: Stereo Image Super-Resolution Using NAFNet
+
+@InProceedings{Chu2022NAFSSR,
+  author    = {Xiaojie Chu and Liangyu Chen and Wenqing Yu},
+  title     = {NAFSSR: Stereo Image Super-Resolution Using NAFNet},
+  booktitle = {CVPRW},
+  year      = {2022},
+}
+'''
+
 import numpy as np
 import torch
 import torch.nn as nn

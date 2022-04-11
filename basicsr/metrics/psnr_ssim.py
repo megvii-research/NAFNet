@@ -1,5 +1,7 @@
 # ------------------------------------------------------------------------
-# Copyright (c) 2021 megvii-model. All Rights Reserved.
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+# modified from https://github.com/mayorx/matlab_ssim_pytorch_implementation/blob/main/calc_ssim.py
 # ------------------------------------------------------------------------
 # Modified from BasicSR (https://github.com/xinntao/BasicSR)
 # Copyright 2018-2020 BasicSR Authors
