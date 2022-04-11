@@ -1,5 +1,4 @@
 ## NAFNet: Nonlinear Activation Free Network for Image Restoration
-![visitors](https://visitor-badge.glitch.me/badge?page_id=megvii-research/NAFNet)
 
 The official pytorch implementation of the paper **Simple Baselines for Image Restoration**
 
@@ -118,3 +117,13 @@ If NAFNet helps your research or work, please consider citing NAFNet.
 ### Contact
 
 If you have any questions, please contact chenliangyu@megvii.com or chuxiaojie@megvii.com
+
+---
+
+<details>
+<summary>statistics</summary>
+ 
+![visitors](https://visitor-badge.glitch.me/badge?page_id=megvii-research/NAFNet)
+ 
+</details>
+
