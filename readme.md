@@ -106,10 +106,10 @@ python setup.py develop --no_cuda_ext
 If NAFNet helps your research or work, please consider citing NAFNet.
 
 ```
-@article{chennafnet,
+@article{chen2022simple,
   title={Simple Baselines for Image Restoration},
   author={Chen, Liangyu and Chu, Xiaojie and Zhang, Xiangyu and Sun, Jian},
-  journal={In preparation},
+  journal={arXiv preprint arXiv:2204.04676},
   year={2022}
 }
 ```
