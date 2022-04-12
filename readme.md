@@ -1,3 +1,6 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/simple-baselines-for-image-restoration/image-deblurring-on-gopro)](https://paperswithcode.com/sota/image-deblurring-on-gopro?p=simple-baselines-for-image-restoration)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/simple-baselines-for-image-restoration/image-denoising-on-sidd)](https://paperswithcode.com/sota/image-denoising-on-sidd?p=simple-baselines-for-image-restoration)
+
 ## NAFNet: Nonlinear Activation Free Network for Image Restoration
 
 The official pytorch implementation of the paper **[Simple Baselines for Image Restoration](https://arxiv.org/abs/2204.04676)**
