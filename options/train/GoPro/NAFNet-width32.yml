@@ -9,7 +9,7 @@ name: NAFNet-GoPro-width32
 model_type: ImageRestorationModel
 scale: 1
 num_gpu: 8
-manual_seed: 10
+manual_seed: 42
 
 datasets:
   train:
@@ -60,7 +60,7 @@ train:
   optim_g:
     type: AdamW
     lr: !!float 1e-3
-    weight_decay: 0.
+    weight_decay: !!float 1e-3
     betas: [0.9, 0.9]
 
   scheduler:
