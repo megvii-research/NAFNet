@@ -1,6 +1,6 @@
 ## NAFNet: Nonlinear Activation Free Network for Image Restoration
 
-The official pytorch implementation of the paper **Simple Baselines for Image Restoration**
+The official pytorch implementation of the paper **[Simple Baselines for Image Restoration](https://arxiv.org/abs/2204.04676)**
 
 #### Liangyu Chen\*, Xiaojie Chu\*, Xiangyu Zhang, Jian Sun
 
