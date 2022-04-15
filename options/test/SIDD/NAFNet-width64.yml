@@ -40,7 +40,7 @@ path:
 
 # validation settings
 val:
-  save_img: false
+  save_img: true
   grids: false
   use_image: false
 
