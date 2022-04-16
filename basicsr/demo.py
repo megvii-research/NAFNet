@@ -9,7 +9,7 @@ import torch
 # from basicsr.data import create_dataloader, create_dataset
 from basicsr.models import create_model
 from basicsr.train import parse_options
-from basicsr.utils import FileClient, imfrombytes, img2tensor, padding
+from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, tensor2img, imwrite
 
 # from basicsr.utils import (get_env_info, get_root_logger, get_time_str,
 #                            make_exp_dirs)
@@ -37,10 +37,24 @@ def main():
 
 
     ## 2. run inference
+    opt['dist'] = False
     model = create_model(opt)
-    model.single_image_inference(img, output_path)
 
-    print('inference {} .. finished.'.format(img_path))
+    model.feed_data(data={'lq': img.unsqueeze(dim=0)})
+
+    if model.opt['val'].get('grids', False):
+        model.grids()
+
+    model.test()
+
+    if model.opt['val'].get('grids', False):
+        model.grids_inverse()
+
+    visuals = model.get_current_visuals()
+    sr_img = tensor2img([visuals['result']])
+    imwrite(sr_img, output_path)
+
+    print(f'inference {img_path} .. finished. saved to {output_path}')
 
 if __name__ == '__main__':
     main()

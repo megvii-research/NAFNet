@@ -1,5 +1,4 @@
 ### Pretrained NAFNet Models
 ---
 
-* [NAFNet-SIDD-width64](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view?usp=sharing)
-* [NAFNet-GoPro-width64](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing) 
+please refer to https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models, and download the pretrained models into ./experiments/pretrained_models

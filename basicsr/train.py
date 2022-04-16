@@ -35,6 +35,10 @@ def parse_options(is_train=True):
         default='none',
         help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
+
+    parser.add_argument('--input_path', type=str, required=False, help='The path to the input image. For single image inference only.')
+    parser.add_argument('--output_path', type=str, required=False, help='The path to the output image. For single image inference only.')
+
     args = parser.parse_args()
     opt = parse(args.opt, is_train=is_train)
 
@@ -58,6 +62,12 @@ def parse_options(is_train=True):
         seed = random.randint(1, 10000)
         opt['manual_seed'] = seed
     set_random_seed(seed + opt['rank'])
+
+    if args.input_path is not None and args.output_path is not None:
+        opt['img_path'] = {
+            'input_img': args.input_path,
+            'output_img': args.output_path
+        }
 
     return opt
 

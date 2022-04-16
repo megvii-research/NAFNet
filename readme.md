@@ -35,8 +35,18 @@ python setup.py develop --no_cuda_ext
 ### Quick Start 
 * Image Denoise Colab Demo: [<a href="https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing)
 * Image Deblur Colab Demo: [<a href="https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing)
-
-
+* Single Image Inference Demo:
+    * Image Denoise:
+    ```
+    python basicsr/demo.py -opt options/test/SIDD/NAFNet-width64.yml --input_path ./demo/noisy.png --output_path ./demo/denoise_img.png
+  ```
+    * Image Deblur:
+    ```
+    python basicsr/demo.py -opt options/test/GoPro/NAFNet-width64.yml --input_path ./demo/blurry.png --output_path ./demo/deblur_img.png
+    ```
+    * ```--input_path```: the path of the degraded image
+    * ```--output_path```: the path to save the predicted image
+    * [pretrained models](https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models) should be downloaded. 
 
 ### Results and Pre-trained Models
 
@@ -78,8 +88,8 @@ If you have any questions, please contact chenliangyu@megvii.com or chuxiaojie@m
 
 <details>
 <summary>statistics</summary>
- 
+
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=megvii-research/NAFNet)
- 
+
 </details>
 
