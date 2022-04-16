@@ -28,15 +28,15 @@ def prepare_keys(folder_path, suffix='png'):
     return img_path_list, keys
 
 def create_lmdb_for_reds():
-    folder_path = './datasets/REDS/val/sharp_300'
-    lmdb_path = './datasets/REDS/val/sharp_300.lmdb'
-    img_path_list, keys = prepare_keys(folder_path, 'png')
-    make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+    # folder_path = './datasets/REDS/val/sharp_300'
+    # lmdb_path = './datasets/REDS/val/sharp_300.lmdb'
+    # img_path_list, keys = prepare_keys(folder_path, 'png')
+    # make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
     #
-    folder_path = './datasets/REDS/val/blur_300'
-    lmdb_path = './datasets/REDS/val/blur_300.lmdb'
-    img_path_list, keys = prepare_keys(folder_path, 'jpg')
-    make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+    # folder_path = './datasets/REDS/val/blur_300'
+    # lmdb_path = './datasets/REDS/val/blur_300.lmdb'
+    # img_path_list, keys = prepare_keys(folder_path, 'jpg')
+    # make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
     folder_path = './datasets/REDS/train/train_sharp'
     lmdb_path = './datasets/REDS/train/train_sharp.lmdb'
@@ -62,17 +62,17 @@ def create_lmdb_for_gopro():
     img_path_list, keys = prepare_keys(folder_path, 'png')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
-    folder_path = './datasets/GoPro/test/target'
-    lmdb_path = './datasets/GoPro/test/target.lmdb'
+    # folder_path = './datasets/GoPro/test/target'
+    # lmdb_path = './datasets/GoPro/test/target.lmdb'
 
-    img_path_list, keys = prepare_keys(folder_path, 'png')
-    make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+    # img_path_list, keys = prepare_keys(folder_path, 'png')
+    # make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
-    folder_path = './datasets/GoPro/test/input'
-    lmdb_path = './datasets/GoPro/test/input.lmdb'
+    # folder_path = './datasets/GoPro/test/input'
+    # lmdb_path = './datasets/GoPro/test/input.lmdb'
 
-    img_path_list, keys = prepare_keys(folder_path, 'png')
-    make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+    # img_path_list, keys = prepare_keys(folder_path, 'png')
+    # make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
 def create_lmdb_for_rain13k():
     folder_path = './datasets/Rain13k/train/input'
@@ -101,6 +101,8 @@ def create_lmdb_for_SIDD():
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
     #for val
+    '''
+    
     folder_path = './datasets/SIDD/val/input_crops'
     lmdb_path = './datasets/SIDD/val/input_crops.lmdb'
     mat_path = './datasets/SIDD/ValidationNoisyBlocksSrgb.mat'
@@ -128,3 +130,4 @@ def create_lmdb_for_SIDD():
         cv2.imwrite(osp.join(folder_path, 'ValidationBlocksSrgb_{}.png'.format(i)), cv2.cvtColor(data[i,...], cv2.COLOR_RGB2BGR)) 
     img_path_list, keys = prepare_keys(folder_path, 'png')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+    '''
