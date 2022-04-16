@@ -33,77 +33,30 @@ python setup.py develop --no_cuda_ext
 ```
 
 ### Quick Start 
-* Image Denoise Demo: [<a href="https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing)
-* Image Deblur Demo: [<a href="https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing)
+* Image Denoise Colab Demo: [<a href="https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1dkO5AyktmBoWwxBwoKFUurIDn0m4qDXT?usp=sharing)
+* Image Deblur Colab Demo: [<a href="https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>](https://colab.research.google.com/drive/1yR2ClVuMefisH12d_srXMhHnHwwA1YmU?usp=sharing)
 
+
+
+### Results and Pre-trained Models
+
+| name | Dataset|PSNR|SSIM| model (gdrive) | model (百度网盘) |
+|:----|:----|:----|:----|:----|-----|
+|NAFNet-GoPro-width32|GoPro|32.8705|0.9606|[link](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing)|[link](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ) (提取码: so6v)|
+|NAFNet-GoPro-width64|GoPro|33.7103|0.9668|[link](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing)|[link](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg) (提取码: wnwh)|
+|NAFNet-SIDD-width32|SIDD|39.9672|0.9599|[link](https://drive.google.com/file/d/1lsByk21Xw-6aW7epCwOQxvm6HYCQZPHZ/view?usp=sharing)|[link](https://pan.baidu.com/s/1Xses38SWl-7wuyuhaGNhaw) (提取码: um97)|
+|NAFNet-SIDD-width64|SIDD|40.3045|0.9614|[link](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view?usp=sharing)|[link](https://pan.baidu.com/s/198kYyVSrY_xZF0jGv9U0sQ) (提取码: dton)|
+|NAFNet-REDS-width64|REDS|29.0903|0.8671|[link](https://drive.google.com/file/d/14D4V4raNYIOhETfcuuLI3bGLB-OYIv6X/view?usp=sharing)|[link](https://pan.baidu.com/s/1vg89ccbpIxg3mK9IONBfGg) (提取码: 9fas)|
 
 ### Image Restoration Tasks
----
 
-<details><summary>Image Denoise - SIDD dataset (Click to expand) </summary>
-
-* prepare data
-
-  * ```mkdir ./datasets/SIDD ```
-  
-  * download the SIDD-Medium sRGB Dataset in [here](https://www.eecs.yorku.ca/~kamel/sidd/dataset.php) and unzip it. Move Data (./SIDD_Medium_Srgb/Data) set to ./datasets/SIDD/ or make a soft link. Download [val](https://www.eecs.yorku.ca/~kamel/sidd/benchmark.php) files (ValidationNoisyBlocksSrgb.mat and ValidationGtBlocksSrgb.mat) in ./datasets/SIDD/ .
-  * it should be like:
-  
-    ```bash
-    ./datasets/SIDD/Data
-    ./datasets/SIDD/ValidationNoisyBlocksSrgb.mat
-    ./datasets/SIDD/ValidationGtBlocksSrgb.mat
-    ```
-  
-  * ```python scripts/data_preparation/sidd.py```
-    * crop the train image pairs to 512x512 patches
+| Task                                 | Dataset | Instructions            | Visualization Results                                        |
+| :----------------------------------- | :------ | :---------------------- | :----------------------------------------------------------- |
+| Image Deblurring                     | GoPro   | [link](./docs/GoPro.md) | [gdrive](https://drive.google.com/file/d/1S8u4TqQP6eHI81F9yoVR0be-DLh4cNgb/view?usp=sharing)  ｜ [百度云盘](https://pan.baidu.com/s/1yNYQhznChafsbcfHO44aHQ) (提取码: 96ii) |
+| Image Denoising                      | SIDD    | [link](./docs/SIDD.md)  | [gdrive](https://drive.google.com/file/d/1rbBYD64bfvbHOrN3HByNg0vz6gHQq7Np/view?usp=sharing)   \|  [百度云盘](https://pan.baidu.com/s/1wIubY6SeXRfZHpp6bAojqQ) (提取码: hu4t) |
+| Image Deblurring with JPEG artifacts | REDS    | [link](./docs/REDS.md)  | [gdrive](https://drive.google.com/file/d/1FwHWYPXdPtUkPqckpz-WBitpVyPuXFRi/view?usp=sharing)   \|  [百度云盘](https://pan.baidu.com/s/17T30w5xAtBQQ2P3wawLiVA) (提取码: put5) |
 
 
-* eval
-  * download [pretrained model](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view) to ./experiments/pretrained_models/NAFNet-SIDD-width64.pth 
-  * ```python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/test.py -opt options/test/SIDD/NAFNet-width64.yml --launcher pytorch ```
-    * distributed evaluation. Set nproc_per_node to 1 for single gpu evaluation.
-    * ```calc_psnr(pred, gt)``` rather than ```calc_psnr(pred.round(), gt)``` to avoid the PSNR loss caused by the "round()" operation, following HINet, MPRNet, and etc.
-  
-* train
-  * ```python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/SIDD/NAFNet-width64.yml --launcher pytorch```
-
-</details>
-
-<details>
-  <summary>Image Deblur - GoPro dataset (Click to expand) </summary>
-
-* prepare data
-
-  * ```mkdir ./datasets/GoPro ```
-  
-  * download the [train](https://drive.google.com/drive/folders/1AsgIP9_X0bg0olu2-1N6karm2x15cJWE) set to ./datasets/GoPro/train and [test](https://drive.google.com/drive/folders/1a2qKfXWpNuTGOm2-Jex8kfNSzYJLbqkf) set to ./datasets/GoPro/test (refer to [MPRNet](https://github.com/swz30/MPRNet)) 
-  * it should be like:
-  
-    ```bash
-    ./datasets/
-    ./datasets/GoPro/
-    ./datasets/GoPro/train/
-    ./datasets/GoPro/train/input/
-    ./datasets/GoPro/train/target/
-    ./datasets/GoPro/test/
-    ./datasets/GoPro/test/input/
-    ./datasets/GoPro/test/target/
-    ```
-  
-  * ```python scripts/data_preparation/gopro.py```
-    * crop the train image pairs to 512x512 patches.
-
-
-* eval
-  * download [pretrained model](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing) to ./experiments/pretrained_models/NAFNet-GoPro-width64.pth
-  * ```python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/test.py -opt options/test/GoPro/NAFNet-width64.yml --launcher pytorch```
-      * distributed evaluation. Set nproc_per_node to 1 for single gpu evaluation.
-  
-* train
-  * ```python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/GoPro/NAFNet-width64.yml --launcher pytorch```
-
-</details>
 
 ### Citations
 If NAFNet helps your research or work, please consider citing NAFNet.
