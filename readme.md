@@ -50,13 +50,13 @@ python setup.py develop --no_cuda_ext
 
 ### Results and Pre-trained Models
 
-| name | Dataset|PSNR|SSIM| model (gdrive) | model (百度网盘) |
+| name | Dataset|PSNR|SSIM| pretrained models | configs |
 |:----|:----|:----|:----|:----|-----|
-|NAFNet-GoPro-width32|GoPro|32.8705|0.9606|[link](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing)|[link](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ) (提取码: so6v)|
-|NAFNet-GoPro-width64|GoPro|33.7103|0.9668|[link](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing)|[link](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg) (提取码: wnwh)|
-|NAFNet-SIDD-width32|SIDD|39.9672|0.9599|[link](https://drive.google.com/file/d/1lsByk21Xw-6aW7epCwOQxvm6HYCQZPHZ/view?usp=sharing)|[link](https://pan.baidu.com/s/1Xses38SWl-7wuyuhaGNhaw) (提取码: um97)|
-|NAFNet-SIDD-width64|SIDD|40.3045|0.9614|[link](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view?usp=sharing)|[link](https://pan.baidu.com/s/198kYyVSrY_xZF0jGv9U0sQ) (提取码: dton)|
-|NAFNet-REDS-width64|REDS|29.0903|0.8671|[link](https://drive.google.com/file/d/14D4V4raNYIOhETfcuuLI3bGLB-OYIv6X/view?usp=sharing)|[link](https://pan.baidu.com/s/1vg89ccbpIxg3mK9IONBfGg) (提取码: 9fas)|
+|NAFNet-GoPro-width32|GoPro|32.8705|0.9606|[gdrive](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing)  \|  [百度网盘](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ) (提取码: so6v)|[train](./options/train/GoPro/NAFNet-width32.yml) \| [test](./options/test/GoPro/NAFNet-width32.yml)|
+|NAFNet-GoPro-width64|GoPro|33.7103|0.9668|[gdrive](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing)  \|  [百度网盘](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg) (提取码: wnwh)|[train](./options/train/GoPro/NAFNet-width64.yml) \| [test](./options/test/GoPro/NAFNet-width64.yml)|
+|NAFNet-SIDD-width32|SIDD|39.9672|0.9599|[gdrive](https://drive.google.com/file/d/1lsByk21Xw-6aW7epCwOQxvm6HYCQZPHZ/view?usp=sharing)  \|  [百度网盘](https://pan.baidu.com/s/1Xses38SWl-7wuyuhaGNhaw) (提取码: um97)|[train](./options/train/SIDD/NAFNet-width32.yml) \| [test](./options/test/SIDD/NAFNet-width32.yml)|
+|NAFNet-SIDD-width64|SIDD|40.3045|0.9614|[gdrive](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view?usp=sharing)  \|  [百度网盘](https://pan.baidu.com/s/198kYyVSrY_xZF0jGv9U0sQ) (提取码: dton)|[train](./options/train/SIDD/NAFNet-width64.yml) \| [test](./options/test/SIDD/NAFNet-width64.yml)|
+|NAFNet-REDS-width64|REDS|29.0903|0.8671|[gdrive](https://drive.google.com/file/d/14D4V4raNYIOhETfcuuLI3bGLB-OYIv6X/view?usp=sharing)  \|  [百度网盘](https://pan.baidu.com/s/1vg89ccbpIxg3mK9IONBfGg) (提取码: 9fas)|[train](./options/train/REDS/NAFNet-width64.yml) \| [test](./options/test/REDS/NAFNet-width64.yml)|
 
 ### Image Restoration Tasks
 
