@@ -6,13 +6,13 @@
 
 ##### Download the train set and place it in ```./datasets/GoPro/train```:
 
-* google drive [link](https://drive.google.com/file/d/1zgALzrLCC_tcXKu_iHQTHukKUVT1aodI/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1fdsn-M5JhxCL7oThEgt1Sw), (提取码: 9d26)
+* [google drive](https://drive.google.com/file/d/1zgALzrLCC_tcXKu_iHQTHukKUVT1aodI/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1fdsn-M5JhxCL7oThEgt1Sw?pwd=9d26)
 * it should be like ```./datasets/GoPro/train/input ``` and ```./datasets/GoPro/train/target```
 * ```python scripts/data_preparation/gopro.py``` to crop the train image pairs to 512x512 patches and make the data into lmdb format.
 
 ##### Download the evaluation data (in lmdb format) and place it in ```./datasets/GoPro/test/```:
 
-  * google drive [link](https://drive.google.com/file/d/1abXSfeRGrzj2mQ2n2vIBHtObU6vXvr7C/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1oZtEtYB7-2p3fCIspky_mw), (提取码: rmv9)
+  * [google drive](https://drive.google.com/file/d/1abXSfeRGrzj2mQ2n2vIBHtObU6vXvr7C/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1oZtEtYB7-2p3fCIspky_mw?pwd=rmv9)
   * it should be like ```./datasets/GoPro/test/input.lmdb``` and ```./datasets/GoPro/test/target.lmdb```
 
 
@@ -40,8 +40,8 @@
 
 
 ##### Download the pretrain model in ```./experiments/pretrained_models/```
-  * **NAFNet-GoPro-width32**: google drive [link](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ), (提取码: so6v)
-  * **NAFNet-GoPro-width64**: google drive [link](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg), (提取码: wnwh)
+  * **NAFNet-GoPro-width32**: [google drive](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ?pwd=so6v)
+  * **NAFNet-GoPro-width64**: [google drive](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg?pwd=wnwh)
 
 
 
