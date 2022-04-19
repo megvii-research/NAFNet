@@ -12,7 +12,7 @@
 
 ##### Download the evaluation data (in lmdb format) and place it in ```./datasets/REDS/val/```:
 
-  * google drive [link](https://drive.google.com/file/d/1_WPxX6mDSzdyigvie_OlpI-Dknz7RHKh/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1yUGdGFHQGCB5LZKt9dVecw), (提取码: ikki)
+  * [google drive](https://drive.google.com/file/d/1_WPxX6mDSzdyigvie_OlpI-Dknz7RHKh/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1yUGdGFHQGCB5LZKt9dVecw?pwd=ikki),
   * it should be like ```./datasets/REDS/val/blur_300.lmdb``` and ```./datasets/REDS/val/sharp_300.lmdb```
 
 
@@ -34,7 +34,7 @@
 
 
 ##### Download the pretrain model in ```./experiments/pretrained_models/```
-  * **NAFNet-REDS-width64**: google drive [link](https://drive.google.com/file/d/14D4V4raNYIOhETfcuuLI3bGLB-OYIv6X/view?usp=sharing) or 百度网盘 [link](https://pan.baidu.com/s/1vg89ccbpIxg3mK9IONBfGg) (提取码: 9fas)
+  * **NAFNet-REDS-width64**: [google drive](https://drive.google.com/file/d/14D4V4raNYIOhETfcuuLI3bGLB-OYIv6X/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1vg89ccbpIxg3mK9IONBfGg?pwd=9fas) 
 
 
 
