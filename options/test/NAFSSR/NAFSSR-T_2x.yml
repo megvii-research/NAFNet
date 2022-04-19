@@ -1,0 +1,85 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+# Modified from BasicSR (https://github.com/xinntao/BasicSR)
+# Copyright 2018-2020 BasicSR Authors
+# ------------------------------------------------------------------------
+# general settings
+name: NAFSSR-T_2x
+model_type: ImageRestorationModel
+scale: 2
+num_gpu: 1 # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+  test0:
+    name: KITTI2012
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/test/KITTI2012/hr
+    dataroot_lq: datasets/StereoSR/test/KITTI2012/lr_x2
+    io_backend:
+      type: disk
+
+  test1:
+    name: KITTI2015
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/test/KITTI2015/hr
+    dataroot_lq: datasets/StereoSR/test/KITTI2015/lr_x2
+    io_backend:
+      type: disk
+    
+  test2:
+    name: Middlebury
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/test/Middlebury/hr
+    dataroot_lq: datasets/StereoSR/test/Middlebury/lr_x2
+    io_backend:
+      type: disk
+  
+  test3:
+    name: Flickr1024
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/test/Flickr1024/hr
+    dataroot_lq: datasets/StereoSR/test/Flickr1024/lr_x2
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: NAFSSR
+  up_scale: 2
+  width: 48
+  num_blks: 16
+
+
+# path
+path:
+  pretrain_network_g: experiments/pretrained_models/NAFSSR-T_2x.pth
+  strict_load_g: true
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  grids: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_skimage_ssim
+    # psnr_left: # metric name, can be arbitrary
+    #   type: calculate_psnr_left
+    #   crop_border: 0
+    #   test_y_channel: false
+    # ssim_left:
+    #   type: calculate_skimage_ssim_left
+
+  
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

@@ -22,56 +22,42 @@ from basicsr.models.archs.NAFNet_arch import LayerNorm2d, NAFBlock
 from basicsr.models.archs.arch_util import MySequential
 from basicsr.models.archs.local_arch import Local_Base
 
-class GenerateRelations(nn.Module):
+class SCAM(nn.Module):
+    '''
+    Stereo Cross Attention Module (SCAM)
+    '''
     def __init__(self, c):
         super().__init__()
         self.scale = c ** -0.5
 
         self.norm_l = LayerNorm2d(c)
         self.norm_r = LayerNorm2d(c)
-
-        self.l_proj = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
-        self.r_proj = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
-
-    def forward(self, lfeats, rfeats):
-        B, C, H, W = lfeats.shape
-
-        lfeats = lfeats.view(B, C, H, W)
-        rfeats = rfeats.view(B, C, H, W)
-
-        lfeats, rfeats = self.l_proj(self.norm_l(lfeats)), self.r_proj(self.norm_r(rfeats))
-
-        x = lfeats.permute(0, 2, 3, 1) #B H W c
-        y = rfeats.permute(0, 2, 1, 3) #B H c W
-
-        z = torch.matmul(x, y)  #B H W W
-
-        return self.scale * z
-
-class FusionModule(nn.Module):
-    def __init__(self, c):
-        super().__init__()
-        self.relation_generator = GenerateRelations(c)
+        self.l_proj1 = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
+        self.r_proj1 = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
+        
         self.beta = nn.Parameter(torch.zeros((1, c, 1, 1)), requires_grad=True)
         self.gamma = nn.Parameter(torch.zeros((1, c, 1, 1)), requires_grad=True)
 
-        self.l_proj = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
-        self.r_proj = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
+        self.l_proj2 = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
+        self.r_proj2 = nn.Conv2d(c, c, kernel_size=1, stride=1, padding=0)
 
-    def forward(self, lfeats, rfeats):
-        B, C, H, W = lfeats.shape
+    def forward(self, x_l, x_r):
+        Q_l = self.l_proj1(self.norm_l(x_l)).permute(0, 2, 3, 1)  # B, H, W, c
+        Q_r_T = self.r_proj1(self.norm_r(x_r)).permute(0, 2, 1, 3) # B, H, c, W (transposed)
 
-        relations = self.relation_generator(lfeats, rfeats)  # B,  H,  W,  W
+        V_l = self.l_proj2(x_l).permute(0, 2, 3, 1)  # B, H, W, c
+        V_r = self.r_proj2(x_r).permute(0, 2, 3, 1)  # B, H, W, c
 
-        lfeats_projected = self.l_proj(lfeats.view(B, C, H, W)).permute(0, 2, 3, 1)  # B, H, W, c
-        rfeats_projected = self.r_proj(rfeats.view(B, C, H, W)).permute(0, 2, 3, 1)  # B, H, W, c
+        # (B, H, W, c) x (B, H, c, W) -> (B, H, W, W)
+        attention = torch.matmul(Q_l, Q_r_T) * self.scale
 
-        lresidual = torch.matmul(torch.softmax(relations, dim=-1), rfeats_projected)  #B, H, W, c
-        rresidual = torch.matmul(torch.softmax(relations.permute(0, 1, 3, 2), dim=-1), lfeats_projected) #B, H, W, c
+        F_r2l = torch.matmul(torch.softmax(attention, dim=-1), V_r)  #B, H, W, c
+        F_l2r = torch.matmul(torch.softmax(attention.permute(0, 1, 3, 2), dim=-1), V_l) #B, H, W, c
 
-        lresidual = lresidual.permute(0, 3, 1, 2).view(B, C, H, W) * self.beta
-        rresidual = rresidual.permute(0, 3, 1, 2).view(B, C, H, W) * self.gamma
-        return lfeats + lresidual, rfeats + rresidual
+        # scale
+        F_r2l = F_r2l.permute(0, 3, 1, 2) * self.beta
+        F_l2r = F_l2r.permute(0, 3, 1, 2) * self.gamma
+        return x_l + F_r2l, x_r + F_l2r
 
 class DropPath(nn.Module):
     def __init__(self, drop_rate, module):
@@ -91,10 +77,13 @@ class DropPath(nn.Module):
         return new_feats
 
 class NAFBlockSR(nn.Module):
-    def __init__(self, c, fusion=False,  drop_out_rate=0.):
+    '''
+    NAFBlock for Super-Resolution
+    '''
+    def __init__(self, c, fusion=False, drop_out_rate=0.):
         super().__init__()
         self.blk = NAFBlock(c, drop_out_rate=drop_out_rate)
-        self.fusion = FusionModule(c) if fusion else None
+        self.fusion = SCAM(c) if fusion else None
 
     def forward(self, *feats):
         feats = tuple([self.blk(x) for x in feats])
@@ -102,11 +91,13 @@ class NAFBlockSR(nn.Module):
             feats = self.fusion(*feats)
         return feats
 
-
 class NAFNetSR(nn.Module):
-    def __init__(self, img_channel=3, width=16, num_blks=1, drop_path_rate=0., drop_out_rate=0., fusion_from=-1, fusion_to=-1, dual=True, up_scale=4):
+    '''
+    NAFNet for Super-Resolution
+    '''
+    def __init__(self, up_scale=4, width=48, num_blks=16, img_channel=3, drop_path_rate=0., drop_out_rate=0., fusion_from=-1, fusion_to=-1, dual=False):
         super().__init__()
-        self.dual = dual
+        self.dual = dual    # dual input for stereo SR (left view, right view)
         self.intro = nn.Conv2d(in_channels=img_channel, out_channels=width, kernel_size=3, padding=1, stride=1, groups=1,
                               bias=True)
         self.body = MySequential(
@@ -137,11 +128,10 @@ class NAFNetSR(nn.Module):
         out = out + inp_hr
         return out
 
-
-class NAFNetSRLocal(Local_Base, NAFNetSR):
-    def __init__(self, *args, train_size=(1, 6, 64, 64), fast_imp=False, **kwargs):
+class NAFSSR(Local_Base, NAFNetSR):
+    def __init__(self, *args, train_size=(1, 6, 30, 90), fast_imp=False, fusion_from=-1, fusion_to=1000, **kwargs):
         Local_Base.__init__(self)
-        NAFNetSR.__init__(self, *args, **kwargs)
+        NAFNetSR.__init__(self, *args, img_channel=3, fusion_from=fusion_from, fusion_to=fusion_to, dual=True, **kwargs)
 
         N, C, H, W = train_size
         base_size = (int(H * 1.5), int(W * 1.5))
@@ -151,41 +141,14 @@ class NAFNetSRLocal(Local_Base, NAFNetSR):
             self.convert(base_size=base_size, train_size=train_size, fast_imp=fast_imp)
 
 if __name__ == '__main__':
-    img_channel = 3
-    num_blks = 64
-    width = 96
-    # num_blks = 32
-    # width = 64
-    # num_blks = 16
-    # width = 48
-    dual=True
-    # fusion_from = 0
-    # fusion_to = num_blks
-    fusion_from = 0
-    fusion_to = 1000
+    num_blks = 128
+    width = 128
     droppath=0.1
     train_size = (1, 6, 30, 90)
 
-    net = NAFNetSRLocal(up_scale=2,train_size=train_size, fast_imp=True, img_channel=img_channel, width=width, num_blks=num_blks, dual=dual,
-                                                 fusion_from=fusion_from,
-                                                 fusion_to=fusion_to, drop_path_rate=droppath)
-    # net = NAFNetSR(img_channel=img_channel, width=width, num_blks=num_blks, dual=dual,
-    #                                              fusion_from=fusion_from,
-    #                                              fusion_to=fusion_to, drop_path_rate=droppath)
+    net = NAFSSR(up_scale=2,train_size=train_size, fast_imp=True, width=width, num_blks=num_blks, drop_path_rate=droppath)
 
-    c = 6 if dual else 3
-
-    a = torch.randn((2, c, 24, 23))
-
-    b = net(a)
-
-    print(b.shape)
-
-    # inp_shape = (6, 128, 128)
-    
-    inp_shape = (c, 64, 64)
-
-    # inp_shape = (6, 256, 96)
+    inp_shape = (6, 64, 64)
 
     from ptflops import get_model_complexity_info
     FLOPS = 0
@@ -195,7 +158,7 @@ if __name__ == '__main__':
     print(params)
     macs = float(macs[:-4]) + FLOPS / 10 ** 9
 
-    print('mac', macs, params, 'fusion from .. to ', fusion_from, fusion_to)
+    print('mac', macs, params)
 
     # from basicsr.models.archs.arch_util import measure_inference_speed
     # net = net.cuda()

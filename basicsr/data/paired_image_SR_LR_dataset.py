@@ -183,6 +183,9 @@ class PairedImageSRLRDataset(data.Dataset):
 
 
 class PairedStereoImageDataset(data.Dataset):
+    '''
+    Paired dataset for stereo SR (Flickr1024, KITTI, Middlebury)
+    '''
     def __init__(self, opt):
         super(PairedStereoImageDataset, self).__init__()
         self.opt = opt
@@ -255,14 +258,6 @@ class PairedStereoImageDataset(data.Dataset):
                 gt_size = int(self.opt['gt_size'])
                 gt_size_h, gt_size_w = gt_size, gt_size
 
-
-            if 'flip_LR' in self.opt and self.opt['flip_LR']:
-                if np.random.rand() < 0.5:
-                    img_gt = img_gt[:, :, [3, 4, 5, 0, 1, 2]]
-                    img_lq = img_lq[:, :, [3, 4, 5, 0, 1, 2]]
-
-                    # img_gt, img_lq
-
             if 'flip_RGB' in self.opt and self.opt['flip_RGB']:
                 idx = [
                     [0, 1, 2, 3, 4, 5],
@@ -275,42 +270,6 @@ class PairedStereoImageDataset(data.Dataset):
 
                 img_gt = img_gt[:, :, idx]
                 img_lq = img_lq[:, :, idx]
-
-            if 'inverse_RGB' in self.opt and self.opt['inverse_RGB']:
-                for i in range(3):
-                    if np.random.rand() < 0.5:
-                        img_gt[:, :, i] = 1 - img_gt[:, :, i]
-                        img_gt[:, :, i+3] = 1 - img_gt[:, :, i+3]
-                        img_lq[:, :, i] = 1 - img_lq[:, :, i]
-                        img_lq[:, :, i+3] = 1 - img_lq[:, :, i+3]
-
-            if 'naive_inverse_RGB' in self.opt and self.opt['naive_inverse_RGB']:
-                # for i in range(3):
-                if np.random.rand() < 0.5:
-                    img_gt = 1 - img_gt
-                    img_lq = 1 - img_lq
-                    # img_gt[:, :, i] = 1 - img_gt[:, :, i]
-                    # img_gt[:, :, i+3] = 1 - img_gt[:, :, i+3]
-                    # img_lq[:, :, i] = 1 - img_lq[:, :, i]
-                    # img_lq[:, :, i+3] = 1 - img_lq[:, :, i+3]
-
-            if 'random_offset' in self.opt and self.opt['random_offset'] > 0:
-                # if np.random.rand() < 0.9:
-                S = int(self.opt['random_offset'])
-
-                offsets = int(np.random.rand() * (S+1))  #1~S
-                s2, s4 = 0, 0
-
-                if np.random.rand() < 0.5:
-                    s2 = offsets
-                else:
-                    s4 = offsets
-
-                _, w, _ = img_lq.shape
-
-                img_lq = np.concatenate([img_lq[:, s2:w-s4, :3], img_lq[:, s4:w-s2, 3:]], axis=-1)
-                img_gt = np.concatenate(
-                    [img_gt[:, 4 * s2:4*w-4 * s4, :3], img_gt[:, 4 * s4:4*w-4 * s2, 3:]], axis=-1)
 
             # random crop
             img_gt, img_lq = img_gt.copy(), img_lq.copy()

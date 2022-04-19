@@ -300,7 +300,7 @@ class ImageRestorationModel(BaseModel):
                     R_img = sr_img[:, :, 3:]
 
                     # visual_dir = osp.join('visual_results', dataset_name, self.opt['name'])
-                    visual_dir = osp.join('visual_results', self.opt['name'], dataset_name)
+                    visual_dir = osp.join(self.opt['path']['visualization'], dataset_name)
 
                     imwrite(L_img, osp.join(visual_dir, f'{img_name}_L.png'))
                     imwrite(R_img, osp.join(visual_dir, f'{img_name}_R.png'))

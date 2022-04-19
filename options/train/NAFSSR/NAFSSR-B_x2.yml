@@ -1,0 +1,112 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+# Modified from BasicSR (https://github.com/xinntao/BasicSR)
+# Copyright 2018-2020 BasicSR Authors
+# ------------------------------------------------------------------------
+# general settings
+name: NAFNetSR-B_x2
+model_type: ImageRestorationModel
+scale: 2
+num_gpu: 8
+manual_seed: 10
+
+datasets:
+  train:
+    name: Flickr1024-sr-train
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/patches_x2/
+    dataroot_lq: datasets/StereoSR/patches_x2/
+    io_backend:
+      type: disk
+
+    gt_size_h: 60
+    gt_size_w: 180
+    use_hflip: true
+    use_vflip: true
+    use_rot: false
+    flip_RGB: true
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 4
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  val:
+    name: Flickr1024-sr-test
+    type: PairedStereoImageDataset
+    dataroot_gt: datasets/StereoSR/test/Flickr1024/hr
+    dataroot_lq: datasets/StereoSR/test/Flickr1024/lr_x2
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: NAFSSR
+  up_scale: 2
+  width: 96
+  num_blks: 64
+  drop_path_rate: 0.2
+  train_size: [1, 6, 30, 90]
+  drop_out_rate: 0.
+
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+# training settings
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 3e-3
+    weight_decay: !!float 0
+    betas: [0.9, 0.9]
+
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 100000
+    eta_min: !!float 1e-7
+
+  total_iter: 100000
+  warmup_iter: -1 # no warm up
+  mixup: false
+
+  # losses
+  pixel_opt:
+    type: MSELoss
+    loss_weight: 1.
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: !!float 2e4
+  save_img: false
+  trans_num: 1
+
+  max_minibatch: 1
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_skimage_ssim
+
+# logging settings
+logger:
+  print_freq: 200
+  save_checkpoint_freq: !!float 1e4
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
