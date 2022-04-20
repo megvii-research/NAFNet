@@ -1,6 +1,6 @@
 ## NAFSSR: Stereo Image Super-Resolution Using NAFNet
 
-The official pytorch implementation of the paper **[NAFSSR: Stereo Image Super-Resolution Using NAFNet]()**
+The official pytorch implementation of the paper **[NAFSSR: Stereo Image Super-Resolution Using NAFNet](https://arxiv.org/abs/2204.08714)**
 
 #### Xiaojie Chu\*, Liangyu Chen\*, Wenqing Yu
 
