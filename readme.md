@@ -60,6 +60,18 @@ python setup.py develop --no_cuda_ext
     * ```--input_path```: the path of the degraded image
     * ```--output_path```: the path to save the predicted image
     * [pretrained models](https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models) should be downloaded. 
+* Stereo Image Inference Demo:
+    * Stereo Image Super-resolution:
+    ```
+    python basicsr/demo_ssr.py -opt options/test/NAFSSR/NAFSSR-L_4x.yml \
+    --input_l_path ./demo/lr_img_l.png --input_r_path ./demo/lr_img_r.png \
+    --output_l_path ./demo/sr_img_l.png --output_r_path ./demo/sr_img_r.png
+    ```
+    * ```--input_l_path```: the path of the degraded left image
+    * ```--input_r_path```: the path of the degraded right image
+    * ```--output_l_path```: the path to save the predicted left image
+    * ```--output_r_path```: the path to save the predicted right image
+    * [pretrained models](https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models) should be downloaded. 
 * Try the web demo with all three tasks here: [![Replicate](https://replicate.com/megvii-research/nafnet/badge)](https://replicate.com/megvii-research/nafnet)
 
 ### Results and Pre-trained Models
