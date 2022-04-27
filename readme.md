@@ -55,7 +55,7 @@ python setup.py develop --no_cuda_ext
   ```
     * Image Deblur:
     ```
-    python basicsr/demo.py -opt options/test/GoPro/NAFNet-width64.yml --input_path ./demo/blurry.png --output_path ./demo/deblur_img.png
+    python basicsr/demo.py -opt options/test/REDS/NAFNet-width64.yml --input_path ./demo/blurry.jpg --output_path ./demo/deblur_img.png
     ```
     * ```--input_path```: the path of the degraded image
     * ```--output_path```: the path to save the predicted image
