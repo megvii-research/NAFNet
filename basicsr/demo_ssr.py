@@ -78,6 +78,7 @@ def imread(img_path):
 def main():
     # parse options, set distributed setting, set ramdom seed
     opt = parse_options(is_train=False)
+    opt['num_gpu'] = torch.cuda.device_count()
 
     img_l_path = opt['img_path'].get('input_l')
     img_r_path = opt['img_path'].get('input_r')

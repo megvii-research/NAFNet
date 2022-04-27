@@ -18,6 +18,7 @@ from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, tensor2i
 def main():
     # parse options, set distributed setting, set ramdom seed
     opt = parse_options(is_train=False)
+    opt['num_gpu'] = torch.cuda.device_count()
 
     img_path = opt['img_path'].get('input_img')
     output_path = opt['img_path'].get('output_img')
