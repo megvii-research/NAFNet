@@ -60,6 +60,7 @@ python setup.py develop --no_cuda_ext
     * ```--input_path```: the path of the degraded image
     * ```--output_path```: the path to save the predicted image
     * [pretrained models](https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models) should be downloaded. 
+    * Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the Web Demo for single image restoration[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chuxiaojie/NAFNet)
 * Stereo Image Inference Demo:
     * Stereo Image Super-resolution:
     ```
@@ -72,6 +73,7 @@ python setup.py develop --no_cuda_ext
     * ```--output_l_path```: the path to save the predicted left image
     * ```--output_r_path```: the path to save the predicted right image
     * [pretrained models](https://github.com/megvii-research/NAFNet/#results-and-pre-trained-models) should be downloaded. 
+    * Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the Web Demo for stereo image super-resolution[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chuxiaojie/NAFSSR)
 * Try the web demo with all three tasks here: [![Replicate](https://replicate.com/megvii-research/nafnet/badge)](https://replicate.com/megvii-research/nafnet)
 
 ### Results and Pre-trained Models
