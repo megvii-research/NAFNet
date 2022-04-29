@@ -26,7 +26,7 @@ The official pytorch implementation of the paper **[Simple Baselines for Image R
 ![PSNR_vs_MACs](./figures/PSNR_vs_MACs.jpg)
 
 ### News
-NAFNet based Stereo Image Super-Resolution solution ([NAFSSR](https://arxiv.org/abs/2204.08714)) won the **1st place** on the NTIRE 2022 Stereo Image Super-resolution Challenge! 
+**2022.04.15** NAFNet based Stereo Image Super-Resolution solution ([NAFSSR](https://arxiv.org/abs/2204.08714)) won the **1st place** on the NTIRE 2022 Stereo Image Super-resolution Challenge! Training/Evaluation instructions see [here](https://github.com/megvii-research/NAFNet/blob/main/docs/StereoSR.md). 
 
 ### Installation
 This implementation based on [BasicSR](https://github.com/xinntao/BasicSR) which is a open source toolbox for image/video restoration tasks and [HINet](https://github.com/megvii-model/HINet) 
