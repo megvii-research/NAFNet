@@ -1,7 +1,7 @@
 ## NAFSSR: Stereo Image Super-Resolution Using NAFNet
 
-The official pytorch implementation of the paper **[NAFSSR: Stereo Image Super-Resolution Using NAFNet](https://arxiv.org/abs/2204.08714)**
-
+The official pytorch implementation of the paper **[NAFSSR: Stereo Image Super-Resolution Using NAFNet](https://arxiv.org/abs/2204.08714)**.
+You can get more infomation about NAFSSR with folloing links: [[video](https://drive.google.com/file/d/16w33zrb3UI0ZIhvvdTvGB2MP01j0zJve/view)]/[[slides](https://data.vision.ee.ethz.ch/cvl/ntire22/slides/Chu_NAFSSR_slides.pdf)]/[[poster](https://data.vision.ee.ethz.ch/cvl/ntire22/posters/Chu_NAFSSR_poster.pdf)].
 #### Xiaojie Chu\*, Liangyu Chen\*, Wenqing Yu
 
 >This paper proposes a simple baseline named NAFSSR for stereo image super-resolution. We use a stack of NAFNet's Block (NAFBlock) for intra-view feature extraction and combine it with Stereo Cross Attention Modules (SCAM) for cross-view feature interaction.
@@ -137,3 +137,16 @@ python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr
 
 
 
+
+## Citations
+If NAFSSR helps your research or work, please consider citing NAFSSR.
+```
+@InProceedings{chu2022nafssr,
+    author    = {Chu, Xiaojie and Chen, Liangyu and Yu, Wenqing},
+    title     = {NAFSSR: Stereo Image Super-Resolution Using NAFNet},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+    month     = {June},
+    year      = {2022},
+    pages     = {1239-1248}
+}
+```

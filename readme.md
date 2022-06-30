@@ -26,7 +26,7 @@ The official pytorch implementation of the paper **[Simple Baselines for Image R
 ![PSNR_vs_MACs](./figures/PSNR_vs_MACs.jpg)
 
 ### News
-**2022.04.15** NAFNet based Stereo Image Super-Resolution solution ([NAFSSR](https://arxiv.org/abs/2204.08714)) won the **1st place** on the NTIRE 2022 Stereo Image Super-resolution Challenge! Training/Evaluation instructions see [here](https://github.com/megvii-research/NAFNet/blob/main/docs/StereoSR.md). 
+**2022.04.15** NAFNet based Stereo Image Super-Resolution solution ([NAFSSR](https://arxiv.org/abs/2204.08714)) won the **1st place** on the NTIRE 2022 Stereo Image Super-resolution Challenge! Training/Evaluation instructions see [here](https://github.com/megvii-research/NAFNet/blob/main/docs/StereoSR.md). [Presentation video](https://drive.google.com/file/d/16w33zrb3UI0ZIhvvdTvGB2MP01j0zJve/view), [slides](https://data.vision.ee.ethz.ch/cvl/ntire22/slides/Chu_NAFSSR_slides.pdf) and [poster](https://data.vision.ee.ethz.ch/cvl/ntire22/posters/Chu_NAFSSR_poster.pdf) are available now.
 
 ### Installation
 This implementation based on [BasicSR](https://github.com/xinntao/BasicSR) which is a open source toolbox for image/video restoration tasks and [HINet](https://github.com/megvii-model/HINet) 
@@ -107,6 +107,17 @@ If NAFNet helps your research or work, please consider citing NAFNet.
   author={Chen, Liangyu and Chu, Xiaojie and Zhang, Xiangyu and Sun, Jian},
   journal={arXiv preprint arXiv:2204.04676},
   year={2022}
+}
+```
+If NAFSSR helps your research or work, please consider citing NAFSSR.
+```
+@InProceedings{chu2022nafssr,
+    author    = {Chu, Xiaojie and Chen, Liangyu and Yu, Wenqing},
+    title     = {NAFSSR: Stereo Image Super-Resolution Using NAFNet},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+    month     = {June},
+    year      = {2022},
+    pages     = {1239-1248}
 }
 ```
 
