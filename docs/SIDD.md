@@ -29,6 +29,18 @@
   ```
   python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/SIDD/NAFNet-width64.yml --launcher pytorch
   ```
+  
+* Baseline-SIDD-width32:
+
+  ```
+  python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/SIDD/Baseline-width32.yml --launcher pytorch
+  ```
+
+* Baseline-SIDD-width64:
+
+  ```
+  python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/SIDD/Baseline-width64.yml --launcher pytorch
+  ```
 
 * 8 gpus by default. Set ```--nproc_per_node``` to # of gpus for distributed validation.
 
@@ -44,6 +56,9 @@
 
   * **NAFNet-SIDD-width64**: [google drive](https://drive.google.com/file/d/14Fht1QQJ2gMlk4N1ERCRuElg8JfjrWWR/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/198kYyVSrY_xZF0jGv9U0sQ?pwd=dton)
 
+  * **Baseline-SIDD-width32**: [google drive](https://drive.google.com/file/d/1NhqVcqkDcYvYgF_P4BOOfo9tuTcKDuhW/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1wkskmCRKhXq6dGa6Ns8D0A?pwd=0rin)
+
+  * **Baseline-SIDD-width64**: [google drive](https://drive.google.com/file/d/1wQ1HHHPhSp70_ledMBZhDhIGjZQs16wO/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1ivruGfSRGfWq5AEB8qc7YQ?pwd=t9w8)
     
 
 ##### Testing on SIDD dataset	
@@ -60,7 +75,17 @@ python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr
 python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/SIDD/NAFNet-width64.yml --launcher pytorch
 ```
 
+  * Baseline-SIDD-width32:
+
+```
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/SIDD/Baseline-width32.yml --launcher pytorch
+```
+
+  * Baseline-SIDD-width64:
+
+```
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/SIDD/Baseline-width64.yml --launcher pytorch
+```
+
 * Test by a single gpu by default. Set ```--nproc_per_node``` to # of gpus for distributed validation.
-
-
 
