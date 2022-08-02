@@ -26,6 +26,8 @@ The official pytorch implementation of the paper **[Simple Baselines for Image R
 ![PSNR_vs_MACs](./figures/PSNR_vs_MACs.jpg)
 
 ### News
+**2022.08.02** The Baseline is open-sourced, including the pretrained model/training && testing configs.
+
 **2022.07.03** Related work, [Improving Image Restoration by Revisiting Global Information Aggregation](https://arxiv.org/abs/2112.04491) (TLC, a.k.a TLSC in our paper) is accepted by **ECCV2022** :tada: . Code is available at https://github.com/megvii-research/TLC.
 
 **2022.07.03** Our [paper](https://arxiv.org/abs/2204.04676) is accepted by **ECCV2022** :tada:
