@@ -31,6 +31,18 @@
   python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/GoPro/NAFNet-width64.yml --launcher pytorch
   ```
 
+* Baseline-GoPro-width32:
+
+  ```
+  python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/GoPro/Baseline-width32.yml --launcher pytorch
+  ```
+  
+* Baseline-GoPro-width64:
+
+  ```
+  python -m torch.distributed.launch --nproc_per_node=8 --master_port=4321 basicsr/train.py -opt options/train/GoPro/Baseline-width64.yml --launcher pytorch
+  ```
+  
 * 8 gpus by default. Set ```--nproc_per_node``` to # of gpus for distributed validation.
 
   
@@ -42,6 +54,8 @@
 ##### Download the pretrain model in ```./experiments/pretrained_models/```
   * **NAFNet-GoPro-width32**: [google drive](https://drive.google.com/file/d/1Fr2QadtDCEXg6iwWX8OzeZLbHOx2t5Bj/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1AbgG0yoROHmrRQN7dgzDvQ?pwd=so6v)
   * **NAFNet-GoPro-width64**: [google drive](https://drive.google.com/file/d/1S0PVRbyTakYY9a82kujgZLbMihfNBLfC/view?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1g-E1x6En-PbYXm94JfI1vg?pwd=wnwh)
+  * **Baseline-GoPro-width32**: [google drive](https://drive.google.com/file/d/14z7CxRzVkYEhFgsZg79GlPTEr3VFIGyl/view?usp=sharing)  or [百度网盘](https://pan.baidu.com/s/1WnFKYTAQyAQ9XuD5nlHw_Q?pwd=oieh)
+  * **Baseline-GoPro-width64**: [google drive](https://drive.google.com/file/d/1yy0oPNJjJxfaEmO0pfPW_TpeoCotYkuO/view?usp=sharing)  or [百度网盘](https://pan.baidu.com/s/1Fqi2T4nyF_wo4wh1QpgIGg?pwd=we36)
 
 
 
@@ -55,6 +69,16 @@ python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr
   * NAFNet-GoPro-width64:
 ```
 python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/GoPro/NAFNet-width64.yml --launcher pytorch
+```
+
+  * Baseline-GoPro-width32:
+```
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/GoPro/Baseline-width32.yml --launcher pytorch
+```
+
+  * Baseline-GoPro-width64:
+```
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 basicsr/test.py -opt ./options/test/GoPro/Baseline-width64.yml --launcher pytorch
 ```
 
 * Test by a single gpu by default. Set ```--nproc_per_node``` to # of gpus for distributed validation.
