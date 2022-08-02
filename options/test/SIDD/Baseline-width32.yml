@@ -1,0 +1,62 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+# Modified from BasicSR (https://github.com/xinntao/BasicSR)
+# Copyright 2018-2020 BasicSR Authors
+# ------------------------------------------------------------------------
+# general settings
+name: Baseline-SIDD-width32-test
+model_type: ImageRestorationModel
+scale: 1
+num_gpu: 1 # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+
+  val:
+    name: SIDD_val
+    type: PairedImageDataset
+
+    dataroot_gt: ./datasets/SIDD/val/gt_crops.lmdb
+    dataroot_lq: ./datasets/SIDD/val/input_crops.lmdb
+
+    io_backend:
+      type: lmdb
+
+# network structures
+network_g:
+  type: Baseline
+  width: 32
+  enc_blk_nums: [2, 2, 4, 8]
+  middle_blk_num: 12
+  dec_blk_nums: [2, 2, 2, 2]
+  dw_expand: 1
+  ffn_expand: 2
+
+# path
+path:
+  pretrain_network_g: experiments/pretrained_models/Baseline-SIDD-width32.pth
+  strict_load_g: true
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  grids: false
+  use_image: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
