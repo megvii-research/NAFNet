@@ -1,0 +1,108 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2022 megvii-model. All Rights Reserved.
+# ------------------------------------------------------------------------
+# Modified from BasicSR (https://github.com/xinntao/BasicSR)
+# Copyright 2018-2020 BasicSR Authors
+# ------------------------------------------------------------------------
+# general settings
+name: NAFNet-Dashboard-width32
+model_type: ImageRestorationModel
+scale: 1
+num_gpu: 1
+manual_seed: 10
+
+datasets:
+  train:
+    name: dashboard-train
+    type: PairedImageDataset
+    dataroot_gt: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\train\gt
+    dataroot_lq: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\train\lq
+
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+    gt_size: 128    # Cropped patched size for gt patches.
+    use_flip: true
+    use_rot: true
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 20
+    batch_size_per_gpu: 80
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  val:
+    name: dashboard-val
+    type: PairedImageDataset
+    dataroot_gt: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\val\gt
+    dataroot_lq: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\val\lq
+    io_backend:
+      type: disk
+
+
+network_g:
+  type: NAFNetLocal   # network name, see in models/archs/NAFNet_arch.py
+  width: 32
+  enc_blk_nums: [1, 1, 1, 14]
+  middle_blk_num: 1
+  dec_blk_nums: [1, 1, 1, 1]
+
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+# training settings
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 1e-3
+    weight_decay: !!float 1e-3
+    betas: [0.9, 0.9]
+
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 1000
+    eta_min: !!float 1e-7
+
+  total_iter: 1000
+  warmup_iter: -1 # no warm up
+
+  # losses
+  pixel_opt:
+    type: PSNRLoss
+    loss_weight: 1
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: !!float 2e2
+  save_img: false
+
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 10
+  save_checkpoint_freq: !!float 2e2
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+# dist_params:
+#   backend: nccl
+#   port: 29500

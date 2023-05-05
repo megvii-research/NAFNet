@@ -375,27 +375,120 @@ class ImageRestorationModel(BaseModel):
             for key in metrics_dict:
                 metrics_dict[key] /= cnt
 
+            self.metric_results = metrics_dict
             self._log_validation_metric_values(current_iter, dataloader.dataset.opt['name'],
-                                               tb_logger, metrics_dict)
+                                               tb_logger)
         return 0.
 
-    def nondist_validation(self, *args, **kwargs):
-        logger = get_root_logger()
-        logger.warning('nondist_validation is not implemented. Run dist_validation.')
-        self.dist_validation(*args, **kwargs)
+    # def nondist_validation(self, *args, **kwargs):
+    #     logger = get_root_logger()
+    #     logger.warning('nondist_validation is not implemented. Run dist_validation.')
+    #     self.dist_validation(*args, **kwargs)
 
+    def nondist_validation(self, dataloader, current_iter, tb_logger,
+                           save_img, rgb2bgr, use_image):
+        dataset_name = dataloader.dataset.opt['name']
+        with_metrics = self.opt['val'].get('metrics') is not None
+        if with_metrics:
+            self.metric_results = {
+                metric: 0
+                for metric in self.opt['val']['metrics'].keys()
+            }
+        pbar = tqdm(total=len(dataloader), unit='image')
+
+        cnt = 0
+
+        for idx, val_data in enumerate(dataloader):
+            img_name = osp.splitext(osp.basename(val_data['lq_path'][0]))[0]
+            # if img_name[-1] != '9':
+            #     continue
+
+            # print('val_data .. ', val_data['lq'].size(), val_data['gt'].size())
+            self.feed_data(val_data)
+            if self.opt['val'].get('grids', False):
+                self.grids()
+
+            self.test()
+
+            if self.opt['val'].get('grids', False):
+                self.grids_inverse()
+
+            visuals = self.get_current_visuals()
+            sr_img = tensor2img([visuals['result']], rgb2bgr=rgb2bgr)
+            if 'gt' in visuals:
+                gt_img = tensor2img([visuals['gt']], rgb2bgr=rgb2bgr)
+                del self.gt
+
+            # tentative for out of GPU memory
+            del self.lq
+            del self.output
+            torch.cuda.empty_cache()
+
+            if save_img:
+                
+                if self.opt['is_train']:
+                    
+                    save_img_path = osp.join(self.opt['path']['visualization'],
+                                             img_name,
+                                             f'{img_name}_{current_iter}.png')
+                    
+                    save_gt_img_path = osp.join(self.opt['path']['visualization'],
+                                             img_name,
+                                             f'{img_name}_{current_iter}_gt.png')
+                else:
+                    
+                    save_img_path = osp.join(
+                        self.opt['path']['visualization'], dataset_name,
+                        f'{img_name}.png')
+                    save_gt_img_path = osp.join(
+                        self.opt['path']['visualization'], dataset_name,
+                        f'{img_name}_gt.png')
+                    
+                imwrite(sr_img, save_img_path)
+                imwrite(gt_img, save_gt_img_path)
+
+            if with_metrics:
+                # calculate metrics
+                opt_metric = deepcopy(self.opt['val']['metrics'])
+                if use_image:
+                    for name, opt_ in opt_metric.items():
+                        metric_type = opt_.pop('type')
+                        self.metric_results[name] += getattr(
+                            metric_module, metric_type)(sr_img, gt_img, **opt_)
+                else:
+                    for name, opt_ in opt_metric.items():
+                        metric_type = opt_.pop('type')
+                        self.metric_results[name] += getattr(
+                            metric_module, metric_type)(visuals['result'], visuals['gt'], **opt_)
+
+            pbar.update(1)
+            pbar.set_description(f'Test {img_name}')
+            cnt += 1
+            # if cnt == 300:
+            #     break
+        pbar.close()
+
+        current_metric = 0.
+        if with_metrics:
+            for metric in self.metric_results.keys():
+                self.metric_results[metric] /= cnt
+                current_metric = self.metric_results[metric]
+
+            self._log_validation_metric_values(current_iter, dataset_name,
+                                               tb_logger)
+        return current_metric
 
     def _log_validation_metric_values(self, current_iter, dataset_name,
-                                      tb_logger, metric_dict):
+                                      tb_logger):
         log_str = f'Validation {dataset_name}, \t'
-        for metric, value in metric_dict.items():
+        for metric, value in self.metric_results.items():
             log_str += f'\t # {metric}: {value:.4f}'
         logger = get_root_logger()
         logger.info(log_str)
 
         log_dict = OrderedDict()
         # for name, value in loss_dict.items():
-        for metric, value in metric_dict.items():
+        for metric, value in self.metric_results.items():
             log_dict[f'm_{metric}'] = value
 
         self.log_dict = log_dict
