@@ -386,7 +386,7 @@ class ImageRestorationModel(BaseModel):
     #     self.dist_validation(*args, **kwargs)
 
     def nondist_validation(self, dataloader, current_iter, tb_logger,
-                           save_img, rgb2bgr, use_image):
+                           save_img, rgb2bgr, use_image):       # note: add new here
         dataset_name = dataloader.dataset.opt['name']
         with_metrics = self.opt['val'].get('metrics') is not None
         if with_metrics:

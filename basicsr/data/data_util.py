@@ -287,6 +287,33 @@ def paths_from_lmdb(folder):
     return paths
 
 
+def paths_from_meta_info_file(folder, meta_info_file, filename_tmpl):  # note: add new
+    """Generate paths from folder.
+
+    Args:
+        folder (str): Folder path.
+        meta_info_file (str): Path to the meta information file.
+        filename_tmpl (str): Template for each filename. Note that the
+            template excludes the file extension. Usually the filename_tmpl is
+            for files in the input folder.
+
+    Returns:
+        list[str]: Returned path list.
+    """
+
+    with open(meta_info_file, 'r') as fin:
+        input_names = [line.split(' ')[0] for line in fin]
+
+    paths = []
+    for input in input_names:
+        basename, ext = osp.splitext(osp.basename(input))
+        name = f'{filename_tmpl.format(basename)}{ext}'
+        path = osp.join(folder, name)
+        paths.append(path)
+
+    return paths
+
+
 def generate_gaussian_kernel(kernel_size=13, sigma=1.6):
     """Generate Gaussian kernel used in `duf_downsample`.
 
