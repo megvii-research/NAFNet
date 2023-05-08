@@ -11,7 +11,7 @@ from basicsr.data.data_util import (paths_from_folder,
                                     paths_from_meta_info_file,
                                     paths_from_lmdb)
 from basicsr.data.transforms import augment, paired_random_crop
-from basicsr.utils import FileClient, imfrombytes, img2tensor, padding
+from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, get_root_logger
 
 import sys
 from pathlib import Path
@@ -19,6 +19,8 @@ sys.path.append(str(Path(__file__).resolve().parents[3]))
 from psf import PSF
 import random
 import math
+
+logger = get_root_logger()
 
 
 class RandomDegradationImageDataset(data.Dataset):
@@ -81,13 +83,13 @@ class RandomDegradationImageDataset(data.Dataset):
         self.range_deg_params = dict(
             d=(40e-3, 64e-3),                               # 光栅常数d的范围，单位um
             ratio=(0.8, 0.9),                               # 光栅透光部分a相对于d的比例
-            N=(100, 200, 300, 400),                         # 屏蔽网的可选目数
-            f=(20, 25, 30, 35, 40, 45),                     # 相机的可选焦距，单位mm
+            N=(80, 100, 150, 180, 200, 250),                # 屏蔽网的可选目数
+            f=(30, 35, 40, 45, 50),                         # 相机的可选焦距，单位mm
             size=(2/3, 1/2, 1/3, 1/4),                      # 相机可选靶面尺寸，单位英寸
             res=((1920, 1080), (3840, 2160)),               # 相机可选分辨率
             spectrum=((475e-6, 20e-6),
                       (525e-6, 20e-6), (625e-6, 20e-6)),    # BGR频谱、中心频率附近抖动范围
-            thresh=(0.5, 0.95)
+            thresh=(0.8, 0.95)                              # 努力阈值范围
         )
         self.psf = PSF(**self.random_degradation())
 
@@ -146,7 +148,7 @@ class RandomDegradationImageDataset(data.Dataset):
                 img_lq = self.psf.blur_image(img_gt, thresh)
                 break
             except Exception:
-                print("Blur kernel invalid, tyr again...")
+                logger.debug("Blur kernel invalid, tyr again...")
 
         # augmentation for training
         if self.opt['phase'] == 'train':
