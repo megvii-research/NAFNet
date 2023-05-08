@@ -14,7 +14,7 @@ manual_seed: 10
 datasets:
   train:
     name: dashboard-train
-    type: PairedImageDataset
+    type: RandomDegradationImageDataset
     dataroot_gt: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\train\gt
     dataroot_lq: E:\HCH\graduate\research_1\NAFNet\datasets\dashboard.v2i.voc\train\lq
 

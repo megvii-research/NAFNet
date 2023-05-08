@@ -17,6 +17,8 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[3]))
 from psf import PSF
+import random
+import math
 
 
 class RandomDegradationImageDataset(data.Dataset):
@@ -76,6 +78,38 @@ class RandomDegradationImageDataset(data.Dataset):
         else:
             self.paths = paths_from_folder(self.gt_folder)
 
+        self.range_deg_params = dict(
+            d=(40e-3, 64e-3),                               # 光栅常数d的范围，单位um
+            ratio=(0.8, 0.9),                               # 光栅透光部分a相对于d的比例
+            N=(100, 200, 300, 400),                         # 屏蔽网的可选目数
+            f=(20, 25, 30, 35, 40, 45),                     # 相机的可选焦距，单位mm
+            size=(2/3, 1/2, 1/3, 1/4),                      # 相机可选靶面尺寸，单位英寸
+            res=((1920, 1080), (3840, 2160)),               # 相机可选分辨率
+            spectrum=((475e-6, 20e-6),
+                      (525e-6, 20e-6), (625e-6, 20e-6)),    # BGR频谱、中心频率附近抖动范围
+            thresh=(0.5, 0.95)
+        )
+        self.psf = PSF(**self.random_degradation())
+
+    def random_degradation(self):
+        params = dict()
+        rng = self.range_deg_params
+
+        params["a"] = (round(random.uniform(rng["d"][0], rng["d"][1]), 3),)*2
+        ratio = random.uniform(rng["ratio"][0], rng["ratio"][1])
+        params["d"] = (round(ratio*params["a"][0], 3),)*2
+        params["N"] = (random.choice(rng["N"]),)*2
+        params["f"] = random.choice(rng["f"])
+        size = random.choice(rng["size"])
+        x, y = math.ceil(size*16)*0.8, math.ceil(size*16)*0.6
+        params["x"] = (round(-x/2, 2), round(x/2, 2))
+        params["y"] = (round(-y/2, 2), round(y/2, 2))
+        params["res"] = random.choice(rng["res"])
+        params["spectrum"] = tuple(round(sp[0] + random.uniform(-sp[1], sp[1]), 6)
+                                   for sp in rng["spectrum"])
+
+        return params
+
     def __getitem__(self, index):
         if self.file_client is None:
             self.file_client = FileClient(
@@ -102,6 +136,17 @@ class RandomDegradationImageDataset(data.Dataset):
         #     raise Exception("lq path {} not working".format(lq_path))
 
         img_lq = None
+        thresh_rng = self.range_deg_params["thresh"]
+        thresh = random.uniform(thresh_rng[0], thresh_rng[1])
+
+        while True:
+            try:
+                params = self.random_degradation()
+                self.psf.__init__(**params)
+                img_lq = self.psf.blur_image(img_gt, thresh)
+                break
+            except Exception:
+                print("Blur kernel invalid, tyr again...")
 
         # augmentation for training
         if self.opt['phase'] == 'train':
