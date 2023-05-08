@@ -97,9 +97,9 @@ class RandomDegradationImageDataset(data.Dataset):
         params = dict()
         rng = self.range_deg_params
 
-        params["a"] = (round(random.uniform(rng["d"][0], rng["d"][1]), 3),)*2
+        params["d"] = (round(random.uniform(rng["d"][0], rng["d"][1]), 3),)*2
         ratio = random.uniform(rng["ratio"][0], rng["ratio"][1])
-        params["d"] = (round(ratio*params["a"][0], 3),)*2
+        params["a"] = (round(ratio*params["d"][0], 3),)*2
         params["N"] = (random.choice(rng["N"]),)*2
         params["f"] = random.choice(rng["f"])
         size = random.choice(rng["size"])
