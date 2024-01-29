@@ -12,7 +12,7 @@ from multiprocessing import Pool
 from os import path as osp
 from tqdm import tqdm
 
-from basicsr.utils import scandir
+from basicsr.utils.misc import scandir
 from basicsr.utils.create_lmdb import create_lmdb_for_gopro
 
 def main():
