@@ -7,3 +7,5 @@ logs/
 *.sh
 datasets
 basicsr.egg-info
+.eggs/*
+build/*
