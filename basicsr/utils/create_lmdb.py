@@ -21,6 +21,7 @@ def prepare_keys(folder_path, suffix='png'):
         list[str]: Key list.
     """
     print('Reading image path list ...')
+    # import ipdb; ipdb.set_trace()
     img_path_list = sorted(
         list(scandir(folder_path, suffix=suffix, recursive=False)))
     keys = [img_path.split('.{}'.format(suffix))[0] for img_path in sorted(img_path_list)]
@@ -131,3 +132,17 @@ def create_lmdb_for_SIDD():
     img_path_list, keys = prepare_keys(folder_path, 'png')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
     '''
+
+def create_lmdb_for_BSDS300(root_path=''):
+    if root_path != '':
+        folder_path = f'{root_path}/input_crops'
+        lmdb_path = f'{root_path}/input_crops.lmdb'
+
+        img_path_list, keys = prepare_keys(folder_path, 'jpg')
+        make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+
+        folder_path = f'{root_path}/gt_crops'
+        lmdb_path = f'{root_path}/gt_crops.lmdb'
+
+        img_path_list, keys = prepare_keys(folder_path, 'jpg')
+        make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)

@@ -5,18 +5,18 @@
 # Copyright 2018-2020 BasicSR Authors
 # ------------------------------------------------------------------------
 # general settings
-name: NAFNet-SIDD-width64
+name: NAFNet-BSDS-width64
 model_type: ImageRestorationModel
 scale: 1
-num_gpu: 8
+num_gpu: 1
 manual_seed: 10
 
 datasets:
   train:
-    name: SIDD
+    name: BSDS
     type: PairedImageDataset
-    dataroot_gt: ./datasets/SIDD/train/gt_crops.lmdb
-    dataroot_lq: ./datasets/SIDD/train/input_crops.lmdb
+    dataroot_gt: /mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/train/gt_crops.lmdb
+    dataroot_lq: /mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/train/input_crops.lmdb
 
     filename_tmpl: '{}'
     io_backend:
@@ -34,10 +34,10 @@ datasets:
     prefetch_mode: ~
 
   val:
-    name: SIDD_val
+    name: BSDS_val
     type: PairedImageDataset
-    dataroot_gt: ./datasets/SIDD/val/gt_crops.lmdb
-    dataroot_lq: ./datasets/SIDD/val/input_crops.lmdb
+    dataroot_gt: /mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/val/gt_crops.lmdb
+    dataroot_lq: /mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/val/input_crops.lmdb
     io_backend:
       type: lmdb
 
@@ -68,7 +68,8 @@ train:
     T_max: 400000
     eta_min: !!float 1e-7
 
-  total_iter: 400000
+  # total_iter: 200000
+  total_iter: 123076
   warmup_iter: -1 # no warm up
 
   # losses

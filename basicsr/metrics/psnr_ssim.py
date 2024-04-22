@@ -39,6 +39,10 @@ def calculate_psnr(img, img2, crop_border, input_order='HWC', test_y_channel=Fal
         img = to_y_channel(img)
         img2 = to_y_channel(img2)
 
+    if isinstance(img, torch.Tensor):
+        img = img.numpy()
+    if isinstance(img2, torch.Tensor):
+        img2 = img2.numpy()
     img = img.astype(np.float64)
     img2 = img2.astype(np.float64)
 
@@ -119,6 +123,10 @@ def calculate_ssim(img, img2, crop_border, input_order='HWC', test_y_channel=Fal
         img = to_y_channel(img)
         img2 = to_y_channel(img2)
 
+    if isinstance(img, torch.Tensor):
+        img = img.numpy()
+    if isinstance(img2, torch.Tensor):
+        img2 = img2.numpy()
     img = img.astype(np.float64)
     img2 = img2.astype(np.float64)
 
