@@ -1,12 +1,6 @@
-# ------------------------------------------------------------------------
-# Copyright (c) 2022 megvii-model. All Rights Reserved.
-# ------------------------------------------------------------------------
-# Modified from BasicSR (https://github.com/xinntao/BasicSR)
-# Copyright 2018-2020 BasicSR Authors
-# ------------------------------------------------------------------------
 import numpy as np
 
-from basicsr.utils.matlab_functions import bgr2ycbcr
+from basicsr.utils import bgr2ycbcr
 
 
 def reorder_image(img, input_order='HWC'):
@@ -27,9 +21,7 @@ def reorder_image(img, input_order='HWC'):
     """
 
     if input_order not in ['HWC', 'CHW']:
-        raise ValueError(
-            f'Wrong input_order {input_order}. Supported input_orders are '
-            "'HWC' and 'CHW'")
+        raise ValueError(f"Wrong input_order {input_order}. Supported input_orders are 'HWC' and 'CHW'")
     if len(img.shape) == 2:
         img = img[..., None]
     if input_order == 'CHW':

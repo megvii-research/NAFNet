@@ -13,7 +13,7 @@ from os import path as osp
 from tqdm import tqdm
 
 from basicsr.utils import scandir_SIDD
-from basicsr.utils.create_lmdb import create_lmdb_for_SIDD
+from basicsr.utils.create_lmdb import create_lmdb_for_BSDS300
 import sys
 sys.path.append("/mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/")
 
@@ -22,19 +22,20 @@ def main():
     opt['n_thread'] = 20
     opt['compression_level'] = 3
 
-    opt['input_folder'] = './datasets/SIDD/Data'
-    opt['save_folder'] = './datasets/SIDD/train/input_crops'
+    opt['input_folder'] = '/mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/Data'
+    opt['save_folder'] = '/mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/val/input_crops'
     opt['crop_size'] = 512
+    opt['crop_size'] = 30
     opt['step'] = 384
     opt['thresh_size'] = 0
     opt['keywords'] = '_NOISY'
     extract_subimages(opt)
 
-    opt['save_folder'] = './datasets/SIDD/train/gt_crops'
+    opt['save_folder'] = '/mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/val/gt_crops'
     opt['keywords'] = '_GT'
     extract_subimages(opt)
 
-    create_lmdb_for_SIDD()
+    create_lmdb_for_BSDS300('/mnt/d/Work/IIT-Jodhpur/semester3/CV/project/NAFNet/datasets/BSDS300/processed/val')
 
 
 def extract_subimages(opt):
@@ -89,6 +90,15 @@ def worker(path, opt):
     img_name = img_name.replace(opt['keywords'], '')
 
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    resized_img = cv2.resize(img, (512, 512))
+
+    index = 0
+    cv2.imwrite(
+                osp.join(opt['save_folder'],
+                         f'{img_name}_s{index:03d}{extension}'), resized_img,
+                [cv2.IMWRITE_PNG_COMPRESSION, opt['compression_level']])
+    process_info = f'Processing {img_name} ...'
+    return process_info
 
     if img.ndim == 2:
         h, w = img.shape

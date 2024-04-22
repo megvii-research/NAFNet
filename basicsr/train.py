@@ -23,6 +23,9 @@ from basicsr.utils import (MessageLogger, check_resume, get_env_info,
                            set_random_seed)
 from basicsr.utils.dist_util import get_dist_info, init_dist
 from basicsr.utils.options import dict2str, parse
+import gc
+
+torch.cuda.empty_cache()
 
 
 def parse_options(is_train=True):
@@ -303,3 +306,4 @@ if __name__ == '__main__':
     import os
     os.environ['GRPC_POLL_STRATEGY']='epoll1'
     main()
+    gc.collect()

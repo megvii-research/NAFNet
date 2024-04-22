@@ -12,7 +12,6 @@ import torch
 from os import path as osp
 
 from .dist_util import master_only
-from .logger import get_root_logger
 
 
 def set_random_seed(seed):
@@ -50,9 +49,9 @@ def make_exp_dirs(opt):
     else:
         mkdir_and_rename(path_opt.pop('results_root'))
     for key, path in path_opt.items():
-        if ('strict_load' not in key) and ('pretrain_network'
-                                           not in key) and ('resume'
-                                                            not in key):
+        if ('strict_load' in key) or ('pretrain_network' in key) or ('resume' in key) or ('param_key' in key):
+            continue
+        else:
             os.makedirs(path, exist_ok=True)
 
 
@@ -69,7 +68,7 @@ def scandir(dir_path, suffix=None, recursive=False, full_path=False):
             Default: False.
 
     Returns:
-        A generator for all the interested files with relative pathes.
+        A generator for all the interested files with relative paths.
     """
 
     if (suffix is not None) and not isinstance(suffix, (str, tuple)):
@@ -91,12 +90,61 @@ def scandir(dir_path, suffix=None, recursive=False, full_path=False):
                     yield return_path
             else:
                 if recursive:
-                    yield from _scandir(
-                        entry.path, suffix=suffix, recursive=recursive)
+                    yield from _scandir(entry.path, suffix=suffix, recursive=recursive)
                 else:
                     continue
 
     return _scandir(dir_path, suffix=suffix, recursive=recursive)
+
+
+def check_resume(opt, resume_iter):
+    """Check resume states and pretrain_network paths.
+
+    Args:
+        opt (dict): Options.
+        resume_iter (int): Resume iteration.
+    """
+    if opt['path']['resume_state']:
+        # get all the networks
+        networks = [key for key in opt.keys() if key.startswith('network_')]
+        flag_pretrain = False
+        for network in networks:
+            if opt['path'].get(f'pretrain_{network}') is not None:
+                flag_pretrain = True
+        if flag_pretrain:
+            print('pretrain_network path will be ignored during resuming.')
+        # set pretrained model paths
+        for network in networks:
+            name = f'pretrain_{network}'
+            basename = network.replace('network_', '')
+            if opt['path'].get('ignore_resume_networks') is None or (network
+                                                                     not in opt['path']['ignore_resume_networks']):
+                opt['path'][name] = osp.join(opt['path']['models'], f'net_{basename}_{resume_iter}.pth')
+                print(f"Set {name} to {opt['path'][name]}")
+
+        # change param_key to params in resume
+        param_keys = [key for key in opt['path'].keys() if key.startswith('param_key')]
+        for param_key in param_keys:
+            if opt['path'][param_key] == 'params_ema':
+                opt['path'][param_key] = 'params'
+                print(f'Set {param_key} to params')
+
+
+def sizeof_fmt(size, suffix='B'):
+    """Get human readable file size.
+
+    Args:
+        size (int): File size.
+        suffix (str): Suffix. Default: 'B'.
+
+    Return:
+        str: Formatted file size.
+    """
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        if abs(size) < 1024.0:
+            return f'{size:3.1f} {unit}{suffix}'
+        size /= 1024.0
+    return f'{size:3.1f} Y{suffix}'
 
 def scandir_SIDD(dir_path, keywords=None, recursive=False, full_path=False):
     """Scan a directory to find the interested files.
@@ -139,48 +187,3 @@ def scandir_SIDD(dir_path, keywords=None, recursive=False, full_path=False):
                     continue
 
     return _scandir(dir_path, keywords=keywords, recursive=recursive)
-
-def check_resume(opt, resume_iter):
-    """Check resume states and pretrain_network paths.
-
-    Args:
-        opt (dict): Options.
-        resume_iter (int): Resume iteration.
-    """
-    logger = get_root_logger()
-    if opt['path']['resume_state']:
-        # get all the networks
-        networks = [key for key in opt.keys() if key.startswith('network_')]
-        flag_pretrain = False
-        for network in networks:
-            if opt['path'].get(f'pretrain_{network}') is not None:
-                flag_pretrain = True
-        if flag_pretrain:
-            logger.warning(
-                'pretrain_network path will be ignored during resuming.')
-        # set pretrained model paths
-        for network in networks:
-            name = f'pretrain_{network}'
-            basename = network.replace('network_', '')
-            if opt['path'].get('ignore_resume_networks') is None or (
-                    basename not in opt['path']['ignore_resume_networks']):
-                opt['path'][name] = osp.join(
-                    opt['path']['models'], f'net_{basename}_{resume_iter}.pth')
-                logger.info(f"Set {name} to {opt['path'][name]}")
-
-
-def sizeof_fmt(size, suffix='B'):
-    """Get human readable file size.
-
-    Args:
-        size (int): File size.
-        suffix (str): Suffix. Default: 'B'.
-
-    Return:
-        str: Formated file siz.
-    """
-    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
-        if abs(size) < 1024.0:
-            return f'{size:3.1f} {unit}{suffix}'
-        size /= 1024.0
-    return f'{size:3.1f} Y{suffix}'

@@ -14,7 +14,8 @@ from basicsr.train import parse_options
 from basicsr.utils import (get_env_info, get_root_logger, get_time_str,
                            make_exp_dirs)
 from basicsr.utils.options import dict2str
-
+import gc
+torch.cuda.empty_cache()
 
 def main():
     # parse options, set distributed setting, set ramdom seed
@@ -68,3 +69,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    gc.collect()

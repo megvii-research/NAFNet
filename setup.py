@@ -71,6 +71,7 @@ def write_version_py():
     content = """# GENERATED VERSION FILE
 # TIME: {}
 __version__ = '{}'
+__gitsha__ = '{}'
 short_version = '{}'
 version_info = ({})
 """
@@ -81,7 +82,7 @@ version_info = ({})
         [x if x.isdigit() else f'"{x}"' for x in SHORT_VERSION.split('.')])
     VERSION = SHORT_VERSION + '+' + sha
 
-    version_file_str = content.format(time.asctime(), VERSION, SHORT_VERSION,
+    version_file_str = content.format(time.asctime(), VERSION, sha, SHORT_VERSION,
                                       VERSION_INFO)
     with open(version_file, 'w') as f:
         f.write(version_file_str)
