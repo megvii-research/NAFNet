@@ -1,0 +1,33 @@
+# Synthetic pipeline verification only; not a research experiment.
+seed: 42
+deterministic: true
+device: cpu
+cpu_threads: 2
+output: ../experiments/workflow_smoke
+backbone:
+  img_channel: 3
+  width: 8
+  middle_blk_num: 1
+  enc_blk_nums: [1, 1]
+  dec_blk_nums: [1, 1]
+data:
+  root: ../datasets/workflow_smoke
+  check_content_leakage: true
+  splits:
+    train: {input: train/input, target: train/target}
+    val: {input: val/input, target: val/target}
+    test: {input: test/input, target: test/target}
+train:
+  epochs: 1
+  batch_size: 1
+  num_workers: 0
+  crop_size: 32
+  augment: true
+  lr: 0.001
+  weight_decay: 0.0
+  milestones: [50, 80]
+  gamma: 0.5
+  grad_clip: 1.0
+  amp: false
+  save_every: 1
+metrics: {crop_border: 0}

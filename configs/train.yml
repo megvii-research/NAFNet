@@ -1,0 +1,32 @@
+# Engineering starting point, not claimed paper hyperparameters or results.
+seed: 42
+deterministic: false
+device: auto
+output: ../experiments/paired_training
+backbone:
+  img_channel: 3
+  width: 32
+  middle_blk_num: 12
+  enc_blk_nums: [2, 2, 4, 8]
+  dec_blk_nums: [2, 2, 2, 2]
+data:
+  root: ../datasets/paired
+  check_content_leakage: true
+  splits:
+    train: {input: train/input, target: train/target}
+    val: {input: val/input, target: val/target}
+    test: {input: test/input, target: test/target}
+train:
+  epochs: 100
+  batch_size: 2
+  num_workers: 0
+  crop_size: 128
+  augment: true
+  lr: 0.0001
+  weight_decay: 0.0
+  milestones: [50, 80]
+  gamma: 0.5
+  grad_clip: 1.0
+  amp: false
+  save_every: 10
+metrics: {crop_border: 0}

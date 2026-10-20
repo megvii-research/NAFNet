@@ -1,0 +1,16 @@
+# Network only; all arms share the official SIDD-width32 backbone.
+network_g:
+  type: NAFNet
+  img_channel: 3
+  width: 32
+  middle_blk_num: 12
+  enc_blk_nums:
+  - 2
+  - 2
+  - 4
+  - 8
+  dec_blk_nums:
+  - 2
+  - 2
+  - 2
+  - 2

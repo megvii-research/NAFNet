@@ -1,0 +1,5 @@
+# Install a matched torch/torchvision pair for your CPU or GPU separately.
+-r requirements.txt
+numpy==1.26.4
+opencv-python==4.10.0.84
+yapf==0.40.1
